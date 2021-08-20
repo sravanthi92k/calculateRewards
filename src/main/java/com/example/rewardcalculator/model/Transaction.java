@@ -2,6 +2,12 @@ package com.example.rewardcalculator.model;
 
 import java.util.Date;
 
+/**
+ * 
+ * Transaction Model class used for request purpose.
+ * 
+ *
+ */
 public class Transaction {
 
 	private int transactionAmount;

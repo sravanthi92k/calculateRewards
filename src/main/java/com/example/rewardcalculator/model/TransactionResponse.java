@@ -1,5 +1,11 @@
 package com.example.rewardcalculator.model;
 
+/**
+ * 
+ * TransactionResponse Model class used for response purpose.
+ * 
+ *
+ */
 public class TransactionResponse {
 
 	private int month1Points;

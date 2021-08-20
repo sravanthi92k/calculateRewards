@@ -14,9 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.rewardcalculator.model.Transaction;
 import com.example.rewardcalculator.model.TransactionResponse;
 
+/**
+ *
+ * This is the reward calculator controller.
+ * 
+ *
+ */
+
 @RestController
 public class RewardCalculatorController {
 
+	/**
+	 * This method is used to calculate the reward points for 3 months and also give
+	 * total points earned by customer.
+	 * 
+	 * @param customerId
+	 * @param transactions
+	 * @return
+	 * @throws Exception
+	 */
 	@PostMapping("/processRewardPoints/{customerId}/transactions")
 	public TransactionResponse processRewardPoints(@PathVariable int customerId,
 			@RequestBody List<Transaction> transactions) throws Exception {
@@ -29,6 +45,7 @@ public class RewardCalculatorController {
 		Date[] start = new Date[lastMonths];
 		Date[] end = new Date[lastMonths];
 
+		// getting the start and end dates of the 3 months w.r.t currentDate
 		findStartandEndofMonths(lastMonths, start, end);
 
 		for (int i = 0; i < lastMonths; i++) {
@@ -41,6 +58,7 @@ public class RewardCalculatorController {
 
 				if (transactionDate.after(start[i]) && transactionDate.before(end[i])) {
 
+					// calculate points
 					monthTotal = monthTotal + calculatePoints(transaction.getTransactionAmount());
 				}
 
@@ -50,6 +68,7 @@ public class RewardCalculatorController {
 			total = total + monthTotal;
 		}
 
+		// updating response.
 		response.setMonth1Points(months[2]);
 		response.setMonth2Points(months[1]);
 		response.setMonth3Points(months[0]);
@@ -58,6 +77,14 @@ public class RewardCalculatorController {
 		return response;
 	}
 
+	/**
+	 * find the start and end date w.r.t current Date
+	 * 
+	 * @param lastMonths
+	 * @param start
+	 * @param end
+	 * @throws Exception
+	 */
 	private void findStartandEndofMonths(int lastMonths, Date[] start, Date[] end) throws Exception {
 		LocalDate currentDate = LocalDate.now();
 		LocalDate prevDate = null;
@@ -76,6 +103,13 @@ public class RewardCalculatorController {
 		}
 	}
 
+	/**
+	 * calculate points.
+	 * 
+	 * 
+	 * @param spendMoney
+	 * @return
+	 */
 	private int calculatePoints(int spendMoney) {
 		int points = 0;
 
